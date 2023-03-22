@@ -1,4 +1,5 @@
 import { Head, Html, Main, NextScript } from 'next/document';
+import { getCssText } from '../styles';
 
 /**
  * This file is similar to the index.html from the vitejs projects
@@ -21,6 +22,12 @@ export default function Document() {
         <link
           href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
           rel="stylesheet"
+        />
+
+        {/* all the stitches css classes will be inserted here, so it works even if js is disabled */}
+        <style
+          id="stitches"
+          dangerouslySetInnerHTML={{ __html: getCssText() }}
         />
       </Head>
       <body>
