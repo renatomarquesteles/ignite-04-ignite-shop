@@ -10,3 +10,6 @@ to style components that have many different variations based on their props
 
 `npm i keen-slider`
 Installs keen slider to create image carousel
+
+`npm i stripe`
+Installs stripe to list products registered on the website
