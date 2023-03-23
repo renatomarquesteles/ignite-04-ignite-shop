@@ -30,3 +30,22 @@ This file is similar to the index.html file of the vitejs projects. It represent
 the basic html elements for the project and allows us to import external resources
 such as custom fonts that will be available to all pages in the project. So we need to
 be careful about what we put in this file.
+
+## getServerSideProps (SSR)
+
+- Set things on the server side
+- Next will only serve a screen to client when everything is done
+- Use this only for information that really needs to be displayed when the page
+loads so indexers, crawlers and bots can see it
+- Otherwise, we'll have pages that load slowly, which is not a good user experience
+- We can also use this function with sensitive information that should not be
+displayed to the client/user like authentication, database etc.
+
+## getStaticProps (SSG)
+
+- It will work the same as getServerSideProps in development environments
+- It is used to cache pages and avoid repetitive API calls
+- We can set when to update the cache through the `revalidate` prop (in seconds)
+- We don't have access to the context of the request, that means that we don't
+have access to user information, cookies, header etc. The page will be the same
+for everyone.

@@ -5,7 +5,7 @@ import { HomeContainer, Product } from '../styles/pages/home';
 
 import 'keen-slider/keen-slider.min.css';
 import { stripe } from '../lib/stripe';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import Stripe from 'stripe';
 
 interface HomeProps {
@@ -41,14 +41,7 @@ export default function Home({ products }: HomeProps) {
   );
 }
 
-// Set things on the server side
-// Next will only serve a screen to client when everything is done
-// Use this only for information that really needs to be displayed when the page loads
-// so indexers, crawlers, bots can see it
-// Otherwise, we'll have pages that load slowly, which is not a good user experience
-// We can also use this function with sensitive information that should not be
-// displayed to the client/user like authentication, database etc.
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   // Gets products list from Stripe
   const response = await stripe.products.list({
     expand: ['data.default_price'],
@@ -69,5 +62,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       products,
     },
+    revalidate: 60 * 60 * 2, // 2 hours
   };
 };
