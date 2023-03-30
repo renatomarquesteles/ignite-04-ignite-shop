@@ -45,7 +45,44 @@ displayed to the client/user like authentication, database etc.
 
 - It will work the same as getServerSideProps in development environments
 - It is used to cache pages and avoid repetitive API calls
+- The first version of each static page is created when we generate the build
 - We can set when to update the cache through the `revalidate` prop (in seconds)
 - We don't have access to the context of the request, that means that we don't
 have access to user information, cookies, header etc. The page will be the same
 for everyone.
+
+## When to use SSR or SSG
+- Does the data change frequently?
+- Does the data to be loaded depend on the context of the request?
+- Can we cache it?
+
+## getStaticPaths / Dynamic SSG
+- Required for dynamic SSG pages
+Example: the product page needs a static page for each product (depends on the product id)
+- This function tells Next which information will be used dynamically to create the static pages
+- The problem is when we have too many different pages to be created. For example,
+an ecommerce with 10000 products, during the build it would take hours to create
+a static page for each product
+- The solution is to use it only for the most popular products
+- To handle items that are not defined in the paths array, we use the fallback
+  - fallback: false -> 404 page
+
+  - fallback: true (recommended) -> will show the page without the params data and
+  try to get that data in the background running the getStaticProps function
+    - We can use the isFallback from the useRouter() to show a loading component
+    while the data is loading.
+    - Next.js will serve a “fallback” version of the page on the first request
+    to such a path. Web crawlers, such as Google, won't be served a fallback and
+    instead the path will behave as in fallback: 'blocking'
+    - Next.js adds this path to the list of pre-rendered pages. Subsequent requests to the
+    same path will serve the generated page, like other pages pre-rendered at build time
+
+  - fallback: 'blocking' -> will only show the page after the data has been loaded
+
+## Prefetch links
+
+Prefetch the page in the background. Defaults to true. Any <Link /> that is in the
+viewport (initially or through scroll) will be preloaded. Prefetch can be disabled
+by passing prefetch={false}. When prefetch is set to false, prefetching will still
+occur on hover. Pages using Static Generation will preload JSON files with the data
+for faster page transitions. Prefetching is only enabled in production.
