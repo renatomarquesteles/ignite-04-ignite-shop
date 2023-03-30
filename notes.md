@@ -86,3 +86,10 @@ viewport (initially or through scroll) will be preloaded. Prefetch can be disabl
 by passing prefetch={false}. When prefetch is set to false, prefetching will still
 occur on hover. Pages using Static Generation will preload JSON files with the data
 for faster page transitions. Prefetching is only enabled in production.
+
+## API routes
+
+Any file inside the folder pages/api is mapped to /api/* and will be treated as
+an API endpoint instead of a page.
+It's useful to execute functions on the next server when the user takes an action,
+different from the getStaticProps and getServerSideProps that runs before the page is loaded.
