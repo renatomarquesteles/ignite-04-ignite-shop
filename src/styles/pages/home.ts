@@ -37,6 +37,12 @@ export const Product = styled('div', {
     opacity: 0,
     transition: 'all 0.2s ease-in-out',
 
+    div: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.25rem',
+    },
+
     strong: {
       fontSize: '$lg',
       color: '$gray100',
@@ -54,5 +60,19 @@ export const Product = styled('div', {
       transform: 'translateY(0%)',
       opacity: 1,
     },
+  },
+});
+
+export const CartButton = styled('span', {
+  width: '3.5rem',
+  height: '3.5rem',
+  borderRadius: 6,
+  background: '$green500',
+  border: 'none',
+  display: 'grid',
+  placeItems: 'center',
+
+  svg: {
+    fill: '$white',
   },
 });
