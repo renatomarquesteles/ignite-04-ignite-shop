@@ -1,5 +1,7 @@
-import { X } from '@phosphor-icons/react';
+import { CircleNotch, X } from '@phosphor-icons/react';
+import axios from 'axios';
 import Image from 'next/image';
+import { useState } from 'react';
 import { useShoppingCart } from 'use-shopping-cart';
 
 import {
@@ -22,13 +24,44 @@ interface SidebarCartProps {
 }
 
 export default function SidebarCart({ isOpen, close }: SidebarCartProps) {
-  const { cartDetails, cartCount, totalPrice, decrementItem } =
-    useShoppingCart();
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+    useState(false);
+  const {
+    cartDetails,
+    cartCount,
+    totalPrice,
+    decrementItem,
+    clearCart,
+    redirectToCheckout,
+  } = useShoppingCart();
 
   const products = Object.values(cartDetails || {});
 
   const handleRemoveClick = (id: string) => {
     decrementItem(id);
+  };
+
+  const handleCheckoutClick = async () => {
+    try {
+      setIsCreatingCheckoutSession(true);
+
+      const response = await axios.post('/api/checkout', {
+        items: cartDetails,
+      });
+
+      const { checkoutSessionId } = response.data;
+
+      clearCart();
+
+      await redirectToCheckout(checkoutSessionId!);
+    } catch (err) {
+      // Should connect to an error watching tool (Datadog / Sentry)
+
+      console.error(err);
+      alert('Checkout redirect failed');
+    } finally {
+      setIsCreatingCheckoutSession(false);
+    }
   };
 
   return (
@@ -60,7 +93,7 @@ export default function SidebarCart({ isOpen, close }: SidebarCartProps) {
                   {product.name}
                 </p>
 
-                <span>$ {product.value.toFixed(2)}</span>
+                <span>$ {(product.value / 100).toFixed(2)}</span>
 
                 <RemoveButton onClick={() => handleRemoveClick(product.id)}>
                   Remove
@@ -80,11 +113,18 @@ export default function SidebarCart({ isOpen, close }: SidebarCartProps) {
 
           <TotalPriceContainer>
             <span>Total price</span>
-            <span>$ {totalPrice!.toFixed(2)}</span>
+            <span>$ {(totalPrice! / 100).toFixed(2)}</span>
           </TotalPriceContainer>
 
-          <CheckoutButton disabled={products.length === 0}>
-            Checkout
+          <CheckoutButton
+            onClick={handleCheckoutClick}
+            disabled={products.length === 0 || isCreatingCheckoutSession}
+          >
+            {isCreatingCheckoutSession ? (
+              <CircleNotch size={22} weight="bold" />
+            ) : (
+              'Checkout'
+            )}
           </CheckoutButton>
         </footer>
       </SidebarContent>

@@ -1,4 +1,4 @@
-import { styled } from '..';
+import { keyframes, styled } from '..';
 
 export const SidebarContainer = styled('div', {
   position: 'fixed',
@@ -91,13 +91,20 @@ export const TotalPriceContainer = styled('div', {
   },
 });
 
+const spinner = keyframes({
+  to: {
+    transform: 'rotate(360deg)',
+  },
+});
+
 export const CheckoutButton = styled('button', {
   width: '100%',
   borderRadius: 8,
   background: '$green500',
   border: 'none',
   padding: '1.25rem 0.5rem',
-  textAlign: 'center',
+  display: 'grid',
+  placeItems: 'center',
   fontSize: '1.125rem',
   fontWeight: 'bold',
   color: '$white',
@@ -112,6 +119,10 @@ export const CheckoutButton = styled('button', {
 
   '&:not(:disabled):hover': {
     backgroundColor: '$green300',
+  },
+
+  svg: {
+    animation: `${spinner} 1s linear infinite`,
   },
 });
 

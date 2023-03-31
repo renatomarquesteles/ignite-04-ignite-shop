@@ -9,6 +9,9 @@ import { Container } from '../styles/pages/app';
 
 globalStyles();
 
+const stripePublicKey =
+  'pk_test_51MogYcETH3SvuMRe7L5UQIAMpp99VzJD5hKR3QlDoABzvNk0CMW0Bb5er1MjHWIgK22JfjDXx07nGh9xEL13aRsN00mUPgt0t9';
+
 export default function App({ Component, pageProps }: AppProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -23,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <CartProvider
       cartMode="checkout-session"
-      stripe={process.env.STRIPE_PUBLIC_KEY!}
+      stripe={stripePublicKey}
       currency="USD"
       shouldPersist
     >

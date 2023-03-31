@@ -30,9 +30,10 @@ export default function Product({ product }: ProductProps) {
     addItem({
       id: product.id,
       name: product.name,
-      price: product.price,
+      price: product.price * 100,
       currency: 'USD',
       image: product.imageUrl,
+      price_id: product.defaultPriceId,
     });
   };
 
