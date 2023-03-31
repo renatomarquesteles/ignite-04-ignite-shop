@@ -1,5 +1,6 @@
 import type { AppProps } from 'next/app';
 import { useState } from 'react';
+import { CartProvider } from 'use-shopping-cart';
 
 import Header from '../components/Header';
 import SidebarCart from '../components/SidebarCart';
@@ -20,11 +21,18 @@ export default function App({ Component, pageProps }: AppProps) {
   };
 
   return (
-    <Container>
-      <Header showSidebar={showSidebar} />
-      <Component {...pageProps} />
+    <CartProvider
+      cartMode="checkout-session"
+      stripe={process.env.STRIPE_PUBLIC_KEY!}
+      currency="USD"
+      shouldPersist
+    >
+      <Container>
+        <Header showSidebar={showSidebar} />
+        <Component {...pageProps} />
 
-      <SidebarCart isOpen={isSidebarOpen} close={closeSidebar} />
-    </Container>
+        <SidebarCart isOpen={isSidebarOpen} close={closeSidebar} />
+      </Container>
+    </CartProvider>
   );
 }
