@@ -22,9 +22,14 @@ interface SidebarCartProps {
 }
 
 export default function SidebarCart({ isOpen, close }: SidebarCartProps) {
-  const { cartDetails, cartCount, totalPrice } = useShoppingCart();
+  const { cartDetails, cartCount, totalPrice, decrementItem } =
+    useShoppingCart();
 
   const products = Object.values(cartDetails || {});
+
+  const handleRemoveClick = (id: string) => {
+    decrementItem(id);
+  };
 
   return (
     <SidebarContainer isOpen={isOpen}>
@@ -57,7 +62,9 @@ export default function SidebarCart({ isOpen, close }: SidebarCartProps) {
 
                 <span>$ {product.value.toFixed(2)}</span>
 
-                <RemoveButton>Remove</RemoveButton>
+                <RemoveButton onClick={() => handleRemoveClick(product.id)}>
+                  Remove
+                </RemoveButton>
               </ProductBody>
             </ProductContainer>
           ))}
