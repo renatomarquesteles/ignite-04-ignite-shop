@@ -32,6 +32,7 @@ export default function Product({ product }: ProductProps) {
       name: product.name,
       price: product.price,
       currency: 'USD',
+      image: product.imageUrl,
     });
   };
 
