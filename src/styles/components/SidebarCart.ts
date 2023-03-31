@@ -127,6 +127,21 @@ export const ProductImageContainer = styled('div', {
   borderRadius: 8,
   display: 'grid',
   placeItems: 'center',
+  position: 'relative',
+});
+
+export const ProductImageCounter = styled('div', {
+  position: 'absolute',
+  left: 5,
+  bottom: 5,
+  width: '1.375rem',
+  height: '1.375rem',
+  background: '$gray900',
+  color: '$white',
+  fontSize: '0.75rem',
+  display: 'grid',
+  placeItems: 'center',
+  borderRadius: 6,
 });
 
 export const ProductBody = styled('div', {

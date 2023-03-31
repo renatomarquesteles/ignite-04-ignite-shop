@@ -7,6 +7,7 @@ import {
   ProductBody,
   ProductContainer,
   ProductImageContainer,
+  ProductImageCounter,
   ProductsList,
   QuantityContainer,
   RemoveButton,
@@ -42,6 +43,9 @@ export default function SidebarCart({ isOpen, close }: SidebarCartProps) {
               <ProductImageContainer>
                 {product.image && (
                   <Image src={product.image} width={94} height={94} alt="" />
+                )}
+                {product.quantity > 1 && (
+                  <ProductImageCounter>{product.quantity}</ProductImageCounter>
                 )}
               </ProductImageContainer>
 
