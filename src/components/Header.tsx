@@ -9,7 +9,11 @@ import {
   HeaderContainer,
 } from '../styles/components/Header';
 
-export default function Header() {
+interface HeaderProps {
+  showSidebar: () => void;
+}
+
+export default function Header({ showSidebar }: HeaderProps) {
   const counter = 1;
 
   return (
@@ -18,7 +22,7 @@ export default function Header() {
         <Image src={logoImg} alt="" />
       </Link>
 
-      <CartButton counter={!!counter} disabled={!counter}>
+      <CartButton onClick={showSidebar} counter={!!counter} disabled={!counter}>
         <Handbag size={24} weight="bold" />
 
         {counter > 0 && <CartCounter>{counter}</CartCounter>}
