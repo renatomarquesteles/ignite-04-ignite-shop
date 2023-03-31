@@ -1,6 +1,7 @@
 import { Handbag } from '@phosphor-icons/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useShoppingCart } from 'use-shopping-cart';
 
 import logoImg from '../assets/logo.svg';
 import {
@@ -14,7 +15,8 @@ interface HeaderProps {
 }
 
 export default function Header({ showSidebar }: HeaderProps) {
-  const counter = 1;
+  const { cartCount } = useShoppingCart();
+  const counter = cartCount || 0;
 
   return (
     <HeaderContainer>

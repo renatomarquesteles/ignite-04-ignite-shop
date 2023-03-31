@@ -4,13 +4,12 @@ import {
   ProductContainer,
   ProductDetails,
 } from '@/src/styles/pages/product';
-import axios from 'axios';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import Stripe from 'stripe';
+import { useShoppingCart } from 'use-shopping-cart';
 
 interface ProductProps {
   product: {
@@ -24,28 +23,16 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false);
   const { isFallback } = useRouter();
+  const { addItem } = useShoppingCart();
 
-  const handleBuyProduct = async () => {
-    try {
-      setIsCreatingCheckoutSession(true);
-      const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId,
-      });
-
-      const { checkoutUrl } = response.data;
-
-      // redirects to an external route
-      window.location.href = checkoutUrl;
-    } catch (err) {
-      // Should connect to an error watching tool (Datadog / Sentry)
-
-      alert('Checkout redirect failed');
-    } finally {
-      setIsCreatingCheckoutSession(false);
-    }
+  const handleAddToCartClick = () => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      currency: 'USD',
+    });
   };
 
   if (isFallback) {
@@ -69,12 +56,7 @@ export default function Product({ product }: ProductProps) {
 
           <p>{product.description}</p>
 
-          <button
-            onClick={handleBuyProduct}
-            disabled={isCreatingCheckoutSession}
-          >
-            Order now
-          </button>
+          <button onClick={handleAddToCartClick}>Add to Cart</button>
         </ProductDetails>
       </ProductContainer>
     </>
